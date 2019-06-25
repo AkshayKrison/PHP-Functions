@@ -1,0 +1,29 @@
+/******Send Custom Mail*********/
+function send_custom_email($from, $mail_head, $to, $subject, $email_message)
+{
+    $ci =& get_instance();
+    $ci->load->database();
+    $ci->load->library('email');
+
+    $config['protocol'] = "smtp";
+    $config['smtp_host'] = "ssl://smtp.gmail.com";
+    $config['smtp_port'] = "465";
+    $config['smtp_user'] = '12319@gmail.com';
+    $config['smtp_pass'] = 'password';
+    $config['charset'] = "utf-8";
+    $config['mailtype'] = "html";
+    $config['newline'] = "\r\n";
+
+    $ci->email->initialize($config);
+    $ci->email->from($from, $mail_head);
+    $ci->email->to($to);
+    $ci->email->reply_to('no-replay@gmail.com', 'OTP Verification');
+    $ci->email->subject($subject);
+    $ci->email->message($email_message);
+    $send = $ci->email->send();
+    if($send == TRUE)
+    {
+        return TRUE;
+    } else{
+      return FALSE;
+    }
